@@ -137,7 +137,7 @@ final class SparseBitSet implements Cloneable {
         * Logically ANDs this bit set with the specified set of bits.
      * @param set the bit set to be ANDed with
      */
-    public function and(SparseBitSet set) {
+    public function AND(SparseBitSet set) {
 	binop(this, set, AND);
     }
     
@@ -358,20 +358,20 @@ final class SparseBitSet implements Cloneable {
 	CUtility.ASSERT(!a.equals(b));
 	SparseBitSet c = (SparseBitSet) a.clone();
 	SparseBitSet d = (SparseBitSet) a.clone();
-	c.and(a);
+	c.AND(a);
 	CUtility.ASSERT(c.equals(a) && a.equals(c));
 	c.xor(a);
 	CUtility.ASSERT(!c.equals(a) && c.size()==0);
 	d.or(b);
 	CUtility.ASSERT(d.equals(a) && !b.equals(d));
-	d.and(b);
+	d.AND(b);
 	CUtility.ASSERT(!d.equals(a) && b.equals(d));
 	d.xor(a);
 	CUtility.ASSERT(!d.equals(a) && !b.equals(d));
 	c.or(d); c.or(b);
 	CUtility.ASSERT(c.equals(a) && a.equals(c));
 	c = (SparseBitSet) d.clone();
-	c.and(b);
+	c.AND(b);
 	CUtility.ASSERT(c.size()==0);
 	Console.println("Success.");
     }
