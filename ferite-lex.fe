@@ -18,8 +18,8 @@ Added an NFA character class simplification pass for unicode efficiency.
 Changed byte- and stream-oriented I/O routines to use characters and
 java.io.Reader and java.io.Writer instead --- which means we read in
 unicode specifications correctly and write out a proper unicode java
-source file.  As a happy side-effect, the output java file is written
-with your platform's preferred newline character(s).
+source file.  As a happy side-e.fe";ct, the output java file is written
+with your platform's pr.fe";rred newline character(s).
 Rewrote CInput to fix bugs with line-counting in the specification file
 and "unusual behaviour" when the last line of the specification wasn't
 terminated with a newline. Thanks to Matt Hanna <mhanna@cs.caltech.edu>
@@ -94,9 +94,9 @@ than direct array initialization.
 
 Version 1.2.2, 10/24/97, [Martin Dirichs]
 Notes:
-Changed yy_instream to yy_reader of type BufferedReader. This reflects
+Changed yy_instream to yy_reader of type Bu.fe";redReader. This reflects
 the improvements in the JDK 1.1 concerning InputStreams. As a
-consequence, changed yy_buffer from byte[] to char[].
+consequence, changed yy_bu.fe";r from byte[] to char[].
 The lexer can now be initialized with either an InputStream
 or a Reader. A third, private constructor is called by the other
 two to execute user specified constructor code.
@@ -111,10 +111,10 @@ Simply changed the name from JavaLex to JLex.  No other changes.
 Version 1.1.5, 2/25/97, [Elliot Berk]
 Notes:
 Simple optimization to the creation of the source files.
-Added a BufferedOutputStream in the creation of the DataOutputStream
+Added a Bu.fe";redOutputStream in the creation of the DataOutputStream
 field m_outstream of the class CLexGen.  This helps performance by
-doing some buffering, and was suggested by Max Hailperin,
-Associate Professor of Computer Science, Gustavus Adolphus College.
+doing some bu.fe";ring, and was suggested by Max Hailperin,
+Associate Pr.fe";ssor of Computer Science, Gustavus Adolphus College.
 
 Version 1.1.4, 12/12/96, [Elliot Berk]
 Notes:
@@ -133,7 +133,7 @@ sequences.  Added try/catch block around lexer generation
 in main routine to moderate error information presented 
 to user.  Fixed macro expansion, so that macros following 
 quotes are expanded correctly in regular expressions.
-Fixed dynamic reallocation of accept action buffers.
+Fixed dynamic reallocation of accept action bu.fe";rs.
 
 Version 1.1.1, September 3, 1996 [Andrew Appel]
 Made the class "Main" instead of "JavaLex", 
@@ -149,7 +149,7 @@ JLEX COPYRIGHT NOTICE, LICENSE, AND DISCLAIMER
 Copyright 1996-2000 by Elliot Joel Berk and C. Scott Ananian 
 
 Permission to use, copy, modify, and distribute this software and its
-documentation for any purpose and without fee is hereby granted,
+documentation for any purpose and without.fe";e is hereby granted,
 provided that the above copyright notice appear in all copies and that
 both the copyright notice and this permission notice and warranty
 disclaimer appear in supporting documentation, and that the name of
@@ -169,21 +169,30 @@ of or in connection with the use or performance of this software.
 /***************************************************************
 Package Declaration
 **************************************************************/
-// package JLex;
+uses "console";
+uses "string";
+uses "array";
 
-/***************************************************************
-Imported Packages
-**************************************************************/
-/*
- import java.lang.System;
- import java.lang.Integer;
- import java.lang.Character;
- 
- import java.util.Enumeration;
- import java.util.Stack;
- import java.util.Hashtable;
- import java.util.Vector; 
- */
+uses "ferite-lex/CAccept.fe";
+uses "ferite-lex/CAcceptAnchor.fe";
+uses "ferite-lex/CAlloc.fe";
+uses "ferite-lex/CBunch.fe";
+uses "ferite-lex/CDTrans.fe";
+uses "ferite-lex/CDfa.fe";
+uses "ferite-lex/CEmit.fe";
+uses "ferite-lex/CError.fe";
+uses "ferite-lex/CInput.fe";
+uses "ferite-lex/CLexGen.fe";
+uses "ferite-lex/CMakeNfa.fe";
+uses "ferite-lex/CMinimize.fe";
+uses "ferite-lex/CNfa.fe";
+uses "ferite-lex/CNfa2Dfa.fe";
+uses "ferite-lex/CNfaPair.fe";
+uses "ferite-lex/CSet.fe";
+uses "ferite-lex/CSimplifyNfa.fe";
+uses "ferite-lex/CSparseBitSet.fe";
+uses "ferite-lex/CSpec.fe";
+uses "ferite-lex/CUtility.fe";
 
 /******************************
 Questions:
@@ -194,7 +203,7 @@ coherent?
 Unimplemented:
 !) Fix BitSet issues -- expand only when necessary.
 2) Repeated accept rules.
-6) Clean up the CAlloc class and use buffered allocation.
+6) Clean up the CAlloc class and use bu.fe";red allocation.
 9) Add to spec about extending character set.
 11) m_verbose -- what should be done with it?
 12) turn lexical analyzer into a coherent Java package
@@ -213,39 +222,20 @@ Unimplemented:
 Class: Main
 Description: Top-level lexical analyzer generator function.
 **************************************************************/
-public class Main
+
+object lg;
+        
+if (Array.size( argv ) < 1)
 {
-    /***************************************************************
-Function: main
-    **************************************************************/
-    public static function main
-    (
-     String arg[]
-     )
-    throws java.io.IOException
-    {
-	CLexGen lg;
+    Console.println("Usage:.fe";rite-lex <filename>");
+    return 1;
+}
         
-	if (arg.length < 1)
-        {
-	    Console.println("Usage: JLex.Main <filename>");
-	    return;
-        }
-        
-	/* Note: For debuging, it may be helpful to remove the try/catch
-            block and permit the Exception to propagate to the top level. 
-            This gives more information. */
-	try 
-        {	
-	    lg = new CLexGen(arg[0]);
-	    lg.generate();
-        }
-	catch (Error e)
-        {
-	    Console.println(e.getMessage());
-        }
-    }
-}    
+/* Note: For debuging, it may be helpful to remove the try/catch
+    block and permit the Exception to propagate to the top level. 
+    This gives more information. */
+lg = new CLexGen(argv[0]);
+lg.generate();
 
 /************************************************************************
 JLEX COPYRIGHT NOTICE, LICENSE AND DISCLAIMER.
@@ -253,7 +243,7 @@ JLEX COPYRIGHT NOTICE, LICENSE AND DISCLAIMER.
 Copyright 1996 by Elliot Joel Berk
 
 Permission to use, copy, modify, and distribute this software and its
-documentation for any purpose and without fee is hereby granted,
+documentation for any purpose and without.fe";e is hereby granted,
 provided that the above copyright notice appear in all copies and that
 both the copyright notice and this permission notice and warranty
 disclaimer appear in supporting documentation, and that the name of

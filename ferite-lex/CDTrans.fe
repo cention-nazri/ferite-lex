@@ -6,8 +6,8 @@ class CDTrans
     /*************************************************************
     Member Variables
     ***********************************************************/
-    number m_dtrans[];
-    CAccept m_accept;
+    array  m_dtrans /*int*/;
+    object/*CAccept*/ m_accept;
     number m_anchor;
     number m_label;
     
@@ -19,15 +19,11 @@ class CDTrans
     /*************************************************************
 Function: CTrans
         ***********************************************************/
-    CDTrans
-        (
-         number label,
-         CSpec spec
-         )
+    function CDTrans( number label, object/*CSpec*/ spec )
     {
-            m_dtrans = new int[spec.m_dtrans_ncols];
-            m_accept = null;
-            m_anchor = CSpec.NONE;
-            m_label = label;
+        Array.resize( .m_dtrans, spec.m_dtrans_ncols );
+        .m_accept = null;
+        .m_anchor = CSpec.NONE;
+        .m_label = label;
     }
 }

@@ -6,17 +6,15 @@ class CAcceptAnchor
     /***************************************************************
     Member Variables
     **************************************************************/
-    CAccept m_accept;
+    object/*CAccept*/ m_accept;
     number m_anchor;
     
     /***************************************************************
 Function: CAcceptAnchor
         **************************************************************/
-    CAcceptAnchor
-        (
-         )
+    function CAcceptAnchor()
     {
-            m_accept = null;
-            m_anchor = CSpec.NONE;
+        .m_accept = null;
+        .m_anchor = CSpec.NONE;
     }
 }

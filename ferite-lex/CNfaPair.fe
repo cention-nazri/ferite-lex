@@ -6,17 +6,15 @@ class CNfaPair
     /***************************************************************
     Member Variables
     **************************************************************/
-    CNfa m_start;
-    CNfa m_end;
+    object m_start;
+    object m_end;
     
     /***************************************************************
 Function: CNfaPair
         **************************************************************/
-    CNfaPair
-        (
-         )
+    function CNfaPair()
     {
-            m_start = null;
-            m_end = null;
+        .m_start = null;
+        .m_end = null;
     }
 }
