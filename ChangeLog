@@ -1,0 +1,8 @@
+--------------------------------------------------------------------------------------------------------
+14.08.2004 11:49 (BST), boris
+
+ * Start of work on ferite-lex based upon JLex
+ * Split original JLex.java down into the classes which exist in it to make porting easier. 
+
+ The aim is to port the java code to ferite code so it is pure ferite goodness.
+

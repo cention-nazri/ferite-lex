@@ -1,0 +1,198 @@
+/***************************************************************
+Class: CSpec
+**************************************************************/
+class CSpec
+{
+    /***************************************************************
+    Member Variables
+    **************************************************************/
+    
+    /* Lexical States. */
+    array m_states; /* Hashtable taking state indices (Integer) 
+			 to state name (String). */
+    
+    /* Regular Expression Macros. */ 
+    array m_macros; /* Hashtable taking macro name (String)
+        to corresponding string buffer that
+        holds macro definition. */
+    
+    /* NFA Machine. */
+    object m_nfa_start; /* Start state of NFA machine. */
+    array m_nfa_states; /* Vector of states, with index
+        corresponding to label. */
+    
+    array m_state_rules; /* An array of Vectors of Integers.
+				    The ith Vector represents the lexical state
+				    with index i.  The contents of the ith 
+				    Vector are the indices of the NFA start
+				    states that can be matched while in
+				    the ith lexical state. */
+    
+    
+    array m_state_dtrans; /* of numbers */
+    
+    /* DFA Machine. */
+    array m_dfa_states; /* Vector of states, with index
+        corresponding to label. */
+    array m_dfa_sets; /* Hashtable taking set of NFA states
+        to corresponding DFA state, 
+        if the latter exists. */
+    
+    /* Accept States and Corresponding Anchors. */
+    array m_accept_vector;
+    array m_anchor_array;
+    
+    /* Transition Table. */
+    array m_dtrans_vector;
+    number m_dtrans_ncols;
+    array m_row_map;
+    array m_col_map;
+    
+    /* Special pseudo-characters for beginning-of-line and end-of-file. */
+    static final number NUM_PSEUDO = 2;
+    number BOL; // beginning-of-line
+    number EOF; // end-of-line
+    
+    /** NFA character class minimization map. */
+    array m_ccls_map; /* number */
+    
+    /* Regular expression token variables. */
+    number m_current_token;
+    string m_lexeme;
+    number m_in_quote;
+    number m_in_ccl;
+    
+    /* Verbose execution flag. */
+    number m_verbose;
+    
+    /* JLex directives flags. */
+    number m_integer_type;
+    number m_intwrap_type;
+    number m_yyeof;
+    number m_count_chars;
+    number m_count_lines;
+    number m_cup_compatible;
+    number m_unix;
+    number m_public;
+    number m_ignorecase;
+    
+    array  m_init_code; /* char */
+    number m_init_read;
+    
+    array  m_init_throw_code; /* char */
+    number m_init_throw_read;
+    
+    array  m_class_code; /* char */
+    number m_class_read;
+    
+    array  m_eof_code; /* char */
+    number m_eof_read;
+    
+    array  m_eof_value_code; /* char */
+    number m_eof_value_read;
+    
+    array  m_eof_throw_code; /* char */
+    number m_eof_throw_read;
+    
+    array  m_yylex_throw_code; /* char */
+    number m_yylex_throw_read;
+    
+    /* Class, function, type names. */
+    array m_class_name; //= [ 'Y', 'y', 'l', 'e', 'x' ]; /* char */
+    array m_implements_name; // = []; /* char */
+    array m_function_name; // = [ 'y', 'y', 'l', 'e', 'x' ]; /* char */
+    array m_type_name; // = [ 'Y', 'y', 't', 'o', 'k', 'e', 'n' ]; /* char */
+    
+    /* Lexical Generator. */
+    private object m_lexGen; /* CLexGen */
+    
+    /***************************************************************
+        Constants
+        ***********************************************************/
+    static final number NONE = 0;
+    static final number START = 1;
+    static final number END = 2;
+    
+    /***************************************************************
+        * Function: CSpec
+        * Description: Constructor.
+        **************************************************************/
+    function CSpec( object lexGen )
+    {
+        .m_class_name = [ 'Y', 'y', 'l', 'e', 'x' ];
+        .m_implements_name = []; 
+        .m_function_name = [ 'y', 'y', 'l', 'e', 'x' ]; 
+        .m_type_name = [ 'Y', 'y', 't', 'o', 'k', 'e', 'n' ];
+        
+        .m_lexGen = lexGen;
+        
+        /* Initialize regular expression token variables. */
+        .m_current_token = .m_lexGen.EOS;
+        .m_lexeme = '\0';
+        .m_in_quote = false;
+        .m_in_ccl = false;
+        
+        /* Initialize hashtable for lexer states. */
+        //new Hashtable();
+        //(new String("YYINITIAL"),new Integer(.m_states.size()));
+        .m_states = [ "YYINITIAL" => Array.size( .m_states ) ]; 
+        
+        /* Initialize hashtable for lexical macros. */
+        .m_macros = [];
+        
+        /* Initialize variables for lexer options. */
+        .m_integer_type = false;
+        .m_intwrap_type = false;
+        .m_count_lines = false;
+        .m_count_chars = false;
+        .m_cup_compatible = false;
+        .m_unix = true;
+        .m_public = false;
+        .m_yyeof = false;
+        .m_ignorecase = false;
+        
+        /* Initialize variables for JLex runtime options. */
+        .m_verbose = true;
+        
+        .m_nfa_start = null;
+        // Vector
+        .m_nfa_states = [];
+        // Vector, Hashtable 
+        .m_dfa_states = [];
+        .m_dfa_sets = [];
+        
+        // Vector
+        .m_dtrans_vector = [];
+        .m_dtrans_ncols = CUtility.MAX_SEVEN_BIT + 1;
+        .m_row_map = null;
+        .m_col_map = null;
+        
+        .m_accept_vector = null;
+        .m_anchor_array = null;
+        
+        .m_init_code = null;
+        .m_init_read = 0;
+        
+        .m_init_throw_code = null;
+        .m_init_throw_read = 0;
+        
+        .m_yylex_throw_code = null;
+        .m_yylex_throw_read = 0;
+        
+        .m_class_code = null;
+        .m_class_read = 0;
+        
+        .m_eof_code = null;
+        .m_eof_read = 0;
+        
+        .m_eof_value_code = null;
+        .m_eof_value_read = 0;
+        
+        .m_eof_throw_code = null;
+        .m_eof_throw_read = 0;
+        
+        .m_state_dtrans = null;
+        
+        .m_state_rules = null;
+    }
+}

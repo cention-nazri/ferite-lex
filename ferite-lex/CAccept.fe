@@ -1,0 +1,75 @@
+/***************************************************************
+Class: CAccept
+**************************************************************/
+class CAccept
+{
+    /***************************************************************
+    Member Variables
+    **************************************************************/
+    string m_action[];
+    number m_action_read;
+    number m_line_number;
+    
+    /***************************************************************
+Function: CAccept
+        **************************************************************/
+    CAccept
+        (
+         string action[],
+         number action_read,
+         number line_number
+         )
+    {
+            number elem;
+            
+            m_action_read = action_read;
+            
+            m_action = new char[m_action_read];
+            for (elem = 0; elem < m_action_read; ++elem)
+            {
+                m_action[elem] = action[elem];
+            }
+            
+            m_line_number = line_number;
+    }
+    
+    /***************************************************************
+Function: CAccept
+        **************************************************************/
+    CAccept
+        (
+         CAccept accept
+         )
+    {
+            number elem;
+            
+            m_action_read = accept.m_action_read;
+            
+            m_action = new char[m_action_read];
+            for (elem = 0; elem < m_action_read; ++elem)
+            {
+                m_action[elem] = accept.m_action[elem];
+            }
+            
+            m_line_number = accept.m_line_number;
+    }
+    
+    /***************************************************************
+Function: mimic
+        **************************************************************/
+    void mimic
+        (
+         CAccept accept
+         )
+    {
+            number elem;
+            
+            m_action_read = accept.m_action_read;
+            
+            m_action = new char[m_action_read];
+            for (elem = 0; elem < m_action_read; ++elem)
+            {
+                m_action[elem] = accept.m_action[elem];
+            }
+    }
+}
