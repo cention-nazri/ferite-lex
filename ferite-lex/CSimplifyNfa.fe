@@ -8,7 +8,7 @@ class CSimplifyNfa
     private number original_charset_size; // original charset size
     private number mapped_charset_size; // reduced charset size
     
-    void simplify(CSpec m_spec) {
+    function simplify(CSpec m_spec) {
         computeClasses(m_spec); // initialize fields.
         
         // now rewrite the NFA using our character class mapping.
@@ -34,7 +34,7 @@ class CSimplifyNfa
         *  a single character class, and then incrementally split classes
         *  as we see edges that require discrimination between characters in
         *  the class. [CSA, 25-Jul-1999] */
-    private void computeClasses(CSpec m_spec) {
+    private function computeClasses(CSpec m_spec) {
         this.original_charset_size = m_spec.m_dtrans_ncols;
         this.ccls = new int[original_charset_size]; // initially all zero.
         

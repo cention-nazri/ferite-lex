@@ -127,7 +127,7 @@ Function: CLexGen
 Function: generate
 Description: 
         **************************************************************/
-    void generate
+    function generate
         (
          )
         throws java.io.IOException, java.io.FileNotFoundException
@@ -199,7 +199,7 @@ Function: userCode
 Description: Process first section of specification,
         echoing it into output file.
         **************************************************************/
-    private void userCode
+    private function userCode
         (
          )
         throws java.io.IOException
@@ -623,7 +623,7 @@ Description:
 Function: userDeclare
 Description:
         **************************************************************/
-    private void userDeclare
+    private function userDeclare
         (
          )
         throws java.io.IOException
@@ -1068,7 +1068,7 @@ Function: userRules
 Description: Processes third section of JLex 
         specification and creates minimized transition table.
         **************************************************************/
-    private void userRules
+    private function userRules
         (
          )
         throws java.io.IOException
@@ -1129,7 +1129,7 @@ Function: printccl
 Description: Debugging routine that outputs readable form
         of character class.
         **************************************************************/
-    private void printccl
+    private function printccl
         (
          CSet set
          )
@@ -1206,7 +1206,7 @@ Description:
 Function: print_nfa
 Description:
         **************************************************************/
-    void print_nfa
+    function print_nfa
         (
          )
     {
@@ -1611,7 +1611,7 @@ Function: saveMacro
 Description: Saves macro definition of form:
         macro_name = macro_definition
         **************************************************************/
-    private void saveMacro
+    private function saveMacro
         (
          )
     {
@@ -1783,7 +1783,7 @@ Description: Takes state declaration and makes entries
         (But commas are actually optional as long as there is 
          white space in between them.)
         **************************************************************/
-    private void saveStates
+    private function saveStates
         (
          )
     {
@@ -2345,7 +2345,7 @@ Description: Returns code for next token.
 Function: details
 Description: High level debugging routine.
                 **************************************************************/
-                private void details
+                private function details
                 (
                  )
             {
@@ -2483,7 +2483,7 @@ Description: High level debugging routine.
         /***************************************************************
 function: print_set
             **************************************************************/
-        void print_set
+        function print_set
             (
              Vector nfa_set
              )
@@ -2510,7 +2510,7 @@ function: print_set
         /***************************************************************
 Function: print_header
             **************************************************************/
-        private void print_header
+        private function print_header
             (
              )
         {

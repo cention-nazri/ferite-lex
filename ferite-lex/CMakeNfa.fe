@@ -25,7 +25,7 @@ Description: Constructor.
 Function: reset
 Description: Resets CMakeNfa member variables.
         **************************************************************/
-    private void reset
+    private function reset
         (
          )
     {
@@ -38,7 +38,7 @@ Description: Resets CMakeNfa member variables.
 Function: set
 Description: Sets CMakeNfa member variables.
         **************************************************************/
-    private void set
+    private function set
         (
          CLexGen lexGen,
          CSpec spec,
@@ -63,7 +63,7 @@ Description: Expands character class to include special BOL and
         EOF characters.  Puts numeric index of these characters in
         input CSpec.
         **************************************************************/
-    void allocate_BOL_EOF
+    function allocate_BOL_EOF
         (
          CSpec spec
          )
@@ -78,7 +78,7 @@ Function: thompson
 Description: High level access function to module.
         Deposits result in input CSpec.
         **************************************************************/
-    void thompson
+    function thompson
         (
          CLexGen lexGen,
          CSpec spec,
@@ -136,7 +136,7 @@ Description: High level access function to module.
 Function: discardCNfa
 Description: 
         **************************************************************/
-    private void discardCNfa
+    private function discardCNfa
         (
          CNfa nfa
          )
@@ -148,7 +148,7 @@ Description:
 Function: processStates
 Description:
         **************************************************************/
-    private void processStates
+    private function processStates
         (
          SparseBitSet states,
          CNfa current
@@ -326,7 +326,7 @@ Description: Recursive descent regular expression parser.
 Function: expr
 Description: Recursive descent regular expression parser.
         **************************************************************/
-    private void expr
+    private function expr
         (
          CNfaPair pair
          )
@@ -375,7 +375,7 @@ Description: Recursive descent regular expression parser.
 Function: cat_expr
 Description: Recursive descent regular expression parser.
         **************************************************************/
-    private void cat_expr
+    private function cat_expr
         (
          CNfaPair pair
          )
@@ -459,7 +459,7 @@ Description: Recursive descent regular expression parser.
 Function: factor
 Description: Recursive descent regular expression parser.
         **************************************************************/
-    private void factor
+    private function factor
         (
          CNfaPair pair
          )
@@ -512,7 +512,7 @@ Description: Recursive descent regular expression parser.
 Function: term
 Description: Recursive descent regular expression parser.
         **************************************************************/
-    private void term
+    private function term
         (
          CNfaPair pair
          )
@@ -624,7 +624,7 @@ Description: Recursive descent regular expression parser.
 Function: dodash
 Description: Recursive descent regular expression parser.
         **************************************************************/
-    private void dodash
+    private function dodash
         (
          CSet set
          )

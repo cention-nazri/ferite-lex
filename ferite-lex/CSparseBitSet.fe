@@ -54,10 +54,10 @@ final class SparseBitSet implements Cloneable {
 	size = 0;
     }
     
-    private void new_block(number bnum) {
+    private function new_block(number bnum) {
 	new_block(bsearch(bnum), bnum);
     }
-    private void new_block(number idx, number bnum) {
+    private function new_block(number idx, number bnum) {
 	if (size==bits.length) { // resize
 	    long[] nbits = new long[size*3];
 	    number [] noffs = new number [size*3];
@@ -69,7 +69,7 @@ final class SparseBitSet implements Cloneable {
 	CUtility.ASSERT(size<bits.length);
 	insert_block(idx, bnum);
     }
-    private void insert_block(number idx, number bnum) {
+    private function insert_block(number idx, number bnum) {
 	CUtility.ASSERT(idx<=size);
 	CUtility.ASSERT(idx==size || offs[idx]!=bnum);
 	System.arraycopy(bits, idx, bits, idx+1, size-idx);
@@ -94,7 +94,7 @@ final class SparseBitSet implements Cloneable {
         * Sets a bit.
      * @param bit the bit to be set
      */
-    public void set(number bit) {
+    public function set(number bit) {
 	number bnum = bit >> LG_BITS;
 	number idx  = bsearch(bnum);
 	if (idx >= size || offs[idx]!=bnum)
@@ -106,7 +106,7 @@ final class SparseBitSet implements Cloneable {
         * Clears a bit.
      * @param bit the bit to be cleared
      */
-    public void clear(number bit) {
+    public function clear(number bit) {
 	number bnum = bit >> LG_BITS;
 	number idx  = bsearch(bnum);
 	if (idx >= size || offs[idx]!=bnum)
@@ -117,7 +117,7 @@ final class SparseBitSet implements Cloneable {
     /**
         * Clears all bits.
      */
-    public void clearAll() {
+    public function clearAll() {
 	size = 0;
     }
     
@@ -137,7 +137,7 @@ final class SparseBitSet implements Cloneable {
         * Logically ANDs this bit set with the specified set of bits.
      * @param set the bit set to be ANDed with
      */
-    public void and(SparseBitSet set) {
+    public function and(SparseBitSet set) {
 	binop(this, set, AND);
     }
     
@@ -145,7 +145,7 @@ final class SparseBitSet implements Cloneable {
         * Logically ORs this bit set with the specified set of bits.
      * @param set the bit set to be ORed with
      */
-    public void or(SparseBitSet set) {
+    public function or(SparseBitSet set) {
 	binop(this, set, OR);
     }
     
@@ -153,7 +153,7 @@ final class SparseBitSet implements Cloneable {
         * Logically XORs this bit set with the specified set of bits.
      * @param set the bit set to be XORed with
      */
-    public void xor(SparseBitSet set) {
+    public function xor(SparseBitSet set) {
 	binop(this, set, XOR);
     }
     
@@ -170,12 +170,12 @@ final class SparseBitSet implements Cloneable {
     private static final BinOp XOR = new BinOp() {
 	public final long op(long a, long b) { return a ^ b; }
     };
-    private static final void binop(SparseBitSet a, SparseBitSet b, BinOp op) {
+    private static final function binop(SparseBitSet a, SparseBitSet b, BinOp op) {
 	number  nsize = a.size + b.size;
 	long[] nbits; 
 	number [] noffs;
 	number a_zero, a_size;
-	// be very clever and avoid allocating more memory if we can.
+	// be very clever and afunction allocating more memory if we can.
 	if (a.bits.length < nsize) { // oh well, have to make working space.
 	    nbits = new long[nsize];
 	    noffs = new number [nsize];
@@ -278,6 +278,7 @@ final class SparseBitSet implements Cloneable {
         * Return an <code>Enumeration</code> of <code>Integer</code>s
      * which represent set bit indices in this SparseBitSet.
      */
+    /* CTR: return an array */
     public Enumeration elements() {
 	return new Enumeration() {
 	    number idx=-1, bit=BITS;
@@ -290,7 +291,7 @@ final class SparseBitSet implements Cloneable {
 		advance();
 		return new Integer(r);
 	    }
-	    private void advance() {
+	    private function advance() {
 		while (idx<size) {
 		    while (++bit<BITS)
 			if (0!=(bits[idx] & (1L<<bit)))
@@ -325,7 +326,7 @@ final class SparseBitSet implements Cloneable {
 	return true;
     }
     /** Self-test. */
-    public static void main(String[] args) {
+    public static function main(String[] args) {
 	final number ITER = 500;
 	final number RANGE= 65536;
 	SparseBitSet a = new SparseBitSet();

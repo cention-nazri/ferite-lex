@@ -62,7 +62,7 @@ Function: emit_imports
 Description: Emits import packages at top of 
         generated source file.
         **************************************************************/
-    /*void emit_imports
+    /*function emit_imports
         (
          CSpec spec,
          OutputStream outstream
@@ -167,7 +167,7 @@ Description: Debugging output.
 Function: emit
 Description: High-level access function to module.
         **************************************************************/
-    void emit
+    function emit
         (
          CSpec spec,
          java.io.PrintWriter outstream
@@ -200,7 +200,7 @@ Function: emit_construct
 Description: Emits constructor, member variables,
         and constants.
         **************************************************************/
-    private void emit_construct
+    private function emit_construct
         (
          )
         throws java.io.IOException
@@ -378,7 +378,7 @@ Function: emit_states
 Description: Emits constants that serve as lexical states,
         including YYINITIAL.
         **************************************************************/
-    private void emit_states
+    private function emit_states
         (
          )
         throws java.io.IOException
@@ -427,7 +427,7 @@ Function: emit_helpers
 Description: Emits helper functions, particularly 
         error handling and input buffering.
         **************************************************************/
-    private void emit_helpers
+    private function emit_helpers
         (
          )
         throws java.io.IOException
@@ -442,7 +442,7 @@ Description: Emits helper functions, particularly
 	m_outstream.println("\tprivate number yy_eof_done = false;");
 	if (null != m_spec.m_eof_code)
         {
-	    m_outstream.print("\tprivate void yy_do_eof ()");
+	    m_outstream.print("\tprivate function yy_do_eof ()");
             
 	    if (null != m_spec.m_eof_throw_code)
             {
@@ -468,7 +468,7 @@ Description: Emits helper functions, particularly
 	emit_states();
 	
 	/* Function: yybegin */
-	m_outstream.println("\tprivate void yybegin (number state) {");
+	m_outstream.println("\tprivate function yybegin (number state) {");
 	m_outstream.println("\t\tyy_lexical_state = state;");
 	m_outstream.println("\t}");
         
@@ -531,7 +531,7 @@ Description: Emits helper functions, particularly
 	m_outstream.println("\t}");
 	
 	/* Function: yy_move_end */
-	m_outstream.println("\tprivate void yy_move_end () {");
+	m_outstream.println("\tprivate function yy_move_end () {");
 	m_outstream.println("\t\tif (yy_buffer_end > yy_buffer_start &&");
 	m_outstream.println("\t\t    '\\n' == yy_buffer[yy_buffer_end-1])");
 	m_outstream.println("\t\t\tyy_buffer_end--;");
@@ -542,7 +542,7 @@ Description: Emits helper functions, particularly
         
 	/* Function: yy_mark_start */
 	m_outstream.println("\tprivate number yy_last_was_cr=false;");
-	m_outstream.println("\tprivate void yy_mark_start () {");
+	m_outstream.println("\tprivate function yy_mark_start () {");
 	if (m_spec.m_count_lines || true == m_spec.m_count_chars)
         {
 	    if (m_spec.m_count_lines)
@@ -569,12 +569,12 @@ Description: Emits helper functions, particularly
 	m_outstream.println("\t}");
         
 	/* Function: yy_mark_end */
-	m_outstream.println("\tprivate void yy_mark_end () {");
+	m_outstream.println("\tprivate function yy_mark_end () {");
 	m_outstream.println("\t\tyy_buffer_end = yy_buffer_index;");
 	m_outstream.println("\t}");
         
 	/* Function: yy_to_mark */
-	m_outstream.println("\tprivate void yy_to_mark () {");
+	m_outstream.println("\tprivate function yy_to_mark () {");
 	m_outstream.println("\t\tyy_buffer_index = yy_buffer_end;");
 	m_outstream.println("\t\tyy_at_bol = "+
 			    "(yy_buffer_end > yy_buffer_start) &&");
@@ -618,7 +618,7 @@ Description: Emits helper functions, particularly
 	m_outstream.println("\t\t\"Error: Internal error.\\n\",");
 	m_outstream.println("\t\t\"Error: Unmatched input.\\n\"");
 	m_outstream.println("\t};");
-	m_outstream.println("\tprivate void yy_error (number code,number fatal) {");
+	m_outstream.println("\tprivate function yy_error (number code,number fatal) {");
 	m_outstream.println("\t\tjava.lang.Console.print(yy_error_string[code]);");
 	m_outstream.println("\t\tjava.lang.Console.flush();");
 	m_outstream.println("\t\tif (fatal) {");
@@ -688,7 +688,7 @@ Description: Emits helper functions, particularly
 Function: emit_header
 Description: Emits class header.
         **************************************************************/
-    private void emit_header
+    private function emit_header
         (
          )
         throws java.io.IOException
@@ -719,7 +719,7 @@ Description: Emits class header.
 Function: emit_table
 Description: Emits transition table.
         **************************************************************/
-    private void emit_table
+    private function emit_table
         (
          )
         throws java.io.IOException
@@ -822,7 +822,7 @@ Description: Output an integer table as a string.  Written by
         by printing integers and representing
         integer sequences as "value:length" pairs.
         **************************************************************/
-    private void emit_table_as_string(int[][] ia) {
+    private function emit_table_as_string(int[][] ia) {
 	number sequenceLength = 0; // RL - length of the number sequence
 	number sequenceStarted = false; // RL - has number sequence started?
 	number previousnumber = -20; // RL - Bogus -20 state.
@@ -903,7 +903,7 @@ Description: Output an integer table as a string.  Written by
 Function: emit_driver
 Description: 
         **************************************************************/
-    private void emit_driver
+    private function emit_driver
         (
          )
         throws java.io.IOException
@@ -1120,7 +1120,7 @@ Description:
 Function: emit_actions
 Description:     
         **************************************************************/
-    private void emit_actions 
+    private function emit_actions 
         (
          String tabs
          )
@@ -1161,7 +1161,7 @@ Description:
 Function: emit_footer
 Description:     
         **************************************************************/
-    private void emit_footer
+    private function emit_footer
         (
          )
         throws java.io.IOException

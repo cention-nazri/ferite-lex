@@ -29,7 +29,7 @@ Function: CNfa2Dfa
 Function: set 
 Description: 
         **************************************************************/
-    private void set
+    private function set
         (
          CLexGen lexGen,
          CSpec spec
@@ -44,7 +44,7 @@ Description:
 Function: reset 
 Description: 
         **************************************************************/
-    private void reset
+    private function reset
         (
          )
     {
@@ -57,7 +57,7 @@ Description:
 Function: make_dfa
 Description: High-level access function to module.
         **************************************************************/
-    void make_dfa
+    function make_dfa
         (
          CLexGen lexGen,
          CSpec spec
@@ -84,7 +84,7 @@ Description: High-level access function to module.
 Function: make_dtrans
 Description: Creates uncompressed CDTrans transition table.
         **************************************************************/
-    private void make_dtrans
+    private function make_dtrans
         (
          )
         /* throws java.lang.CloneNotSupportedException*/
@@ -227,7 +227,7 @@ Description: Creates uncompressed CDTrans transition table.
     /***************************************************************
 Function: free_dfa_states
         **************************************************************/  
-    private void free_dfa_states
+    private function free_dfa_states
         (
          )
     {
@@ -238,7 +238,7 @@ Function: free_dfa_states
     /***************************************************************
 Function: free_nfa_states
         **************************************************************/  
-    private void free_nfa_states
+    private function free_nfa_states
         (
          )
     {
@@ -254,7 +254,7 @@ Function: free_nfa_states
 Function: e_closure
 Description: Alters and returns input set.
         **************************************************************/
-    private void e_closure
+    private function e_closure
         (
          CBunch bunch
          )
@@ -379,7 +379,7 @@ Description: Alters and returns input set.
 Function: move
 Description: Returns null if resulting NFA set is empty.
         **************************************************************/
-    void move
+    function move
         (
          Vector nfa_set,
          SparseBitSet nfa_bit,
@@ -440,7 +440,7 @@ Description: Returns null if resulting NFA set is empty.
     /***************************************************************
 Function: sortStates
         **************************************************************/
-    private void sortStates
+    private function sortStates
         (
          Vector nfa_set
          )

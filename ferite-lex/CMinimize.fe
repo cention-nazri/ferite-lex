@@ -25,7 +25,7 @@ Description: Constructor.
 Function: reset
 Description: Resets member variables.
         **************************************************************/
-    private void reset
+    private function reset
         (
          )
     {
@@ -38,7 +38,7 @@ Description: Resets member variables.
 Function: set
 Description: Sets member variables.
         **************************************************************/
-    private void set
+    private function set
         (
          CSpec spec
          )
@@ -57,7 +57,7 @@ Description: Sets member variables.
 Function: min_dfa
 Description: High-level access function to module.
         **************************************************************/
-    void min_dfa
+    function min_dfa
         (
          CSpec spec
          )
@@ -78,7 +78,7 @@ Description: High-level access function to module.
 Function: col_copy
 Description: Copies source column into destination column.
         **************************************************************/
-    private void col_copy
+    private function col_copy
         (
          number dest,
          number src
@@ -100,7 +100,7 @@ Description: Copies source column into destination column.
 Function: trunc_col
 Description: Truncates each column to the 'correct' length.
         **************************************************************/
-    private void trunc_col
+    private function trunc_col
         (
          )
     {
@@ -121,7 +121,7 @@ Description: Truncates each column to the 'correct' length.
 Function: row_copy
 Description: Copies source row into destination row.
         **************************************************************/
-    private void row_copy
+    private function row_copy
         (
          number dest,
          number src
@@ -192,7 +192,7 @@ Description:
 Function: reduce
 Description: 
         **************************************************************/
-    private void reduce
+    private function reduce
         (
          )
     {
@@ -396,7 +396,7 @@ Function: fix_dtrans
 Description: Updates CDTrans table after minimization 
         using groups, removing redundant transition table states.
         **************************************************************/
-    private void fix_dtrans
+    private function fix_dtrans
         (
          )
     {
@@ -442,7 +442,7 @@ Description: Updates CDTrans table after minimization
 Function: minimize
 Description: Removes redundant transition table states.
         **************************************************************/
-    private void minimize
+    private function minimize
         (
          )
     {
@@ -563,7 +563,7 @@ Description: Removes redundant transition table states.
 Function: init_groups
 Description:
         **************************************************************/
-    private void init_groups
+    private function init_groups
         (
          )
     {
@@ -660,7 +660,7 @@ Description:
     /***************************************************************
 Function: pset
         **************************************************************/
-    private void pset
+    private function pset
         (
          Vector dtrans_group
          )
@@ -680,7 +680,7 @@ Function: pset
     /***************************************************************
 Function: pgroups
         **************************************************************/
-    private void pgroups
+    private function pgroups
         (
          )
     {
