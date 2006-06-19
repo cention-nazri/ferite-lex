@@ -1,5 +1,4 @@
-uses "console", "regexp", "filesystem";
-
+uses "regexp";
 
 class Flexer {
 	
@@ -7,12 +6,17 @@ class Flexer {
 	array contextStack;
 	
 	function context( string context ) {
+		object contextObject;
 		if( not .contexts.keyExists(context) )
 			.contexts[context] = new FlexerContext( context, .contexts.size() );
-		return .contexts[context];
+		contextObject = .contexts[context];
+		if( recipient() ) {
+			deliver( contextObject );
+		}
+		return contextObject;
 	}
 	function defaultContext() {
-		return .context('FlexerDefault');
+		return .context('FlexerDefault') using recipient();
 	}
 	string text = '';
 	function start( string text ) {
@@ -68,9 +72,6 @@ class FlexerContext {
 	array order;
 	
 	function token( string token, string match, object action ) {
-		if( not action ) {
-			action = closure( flexer, token ) { };
-		}
 		.tokens[token] = [ 'Token' => token, 'Match' => match, 'Action' => action ];
 		.order[] = token;
 	}
@@ -98,7 +99,8 @@ class FlexerContext {
 			captures.keys().each() using ( key ) {
 				if( captures[key] ) {
 					object action = .tokens[key]['Action'];
-					invokeReturn = action.invoke( flexer, captures[key] );
+					if( action )
+						invokeReturn = action.invoke( flexer, captures[key] );
 					tokenLength = captures[key].length();
 					return false;
 				}
@@ -108,23 +110,3 @@ class FlexerContext {
 	}
 }
 
-object f = new Flexer();
-f.defaultContext().token( 'BNUM', '0b[0-1]+', closure( flexer, token ) { Console.println("Binary Number: $token" ); });
-f.defaultContext().token( 'ONUM', '0[0-7]+', closure( flexer, token ) { Console.println("Octal Number: $token" ); });
-f.defaultContext().token( 'HNUM', '0x[0-9a-fA-F]+', closure( flexer, token ) { Console.println("Hexadecimal Number: $token" ); });
-f.defaultContext().token( 'RNUM', '(([0-9]*[\.][0-9]+)|([0-9]+[\.][0-9]+))', closure( flexer, token ) { Console.println("Real Number: $token" ); });
-f.defaultContext().token( 'NNUM', '(([0]{1})|([1-9]+[0-9]*))', closure( flexer, token ) { Console.println("Natural Number: $token" ); });	
-f.defaultContext().token( 'LABEL', '[a-zA-Z_][a-zA-Z0-9_]*', closure( flexer, token ) { Console.println("Label: $token" ); });
-f.defaultContext().token( 'PLUS', '\+', closure( flexer, token ) { Console.println(" > $token <" ); });
-f.defaultContext().token( 'MINUS', '\-', closure( flexer, token ) { Console.println(" > $token <" ); });
-f.defaultContext().token( '[ \n\r\t]', null );
-f.defaultContext().token( '/\*', closure( flexer, token ) { Console.println('Start Comment'); flexer.pushContext('COMMENT'); } );
-
-f.context('COMMENT').token( '/\*',       closure( flexer, token ) { flexer.pushContext('COMMENT'); } );
-f.context('COMMENT').token( '[*]/',      closure( flexer, token ) { Console.println('End Comment'); flexer.popContext(); } );
-f.context('COMMENT').token( '[^*/]*',    null );
-f.context('COMMENT').token( '[*][^*/]*', null );
-f.context('COMMENT').token( '/[^*]',     null );
-
-f.start( File.open((argv ? argv[0] : 'test.txt')).toString() );
-while( f.lex() > 0 );

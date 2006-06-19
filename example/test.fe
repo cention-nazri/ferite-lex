@@ -1,0 +1,27 @@
+uses "ferite-lex";
+
+object f = new Flexer();
+
+f.defaultContext() using ( c ) {
+	c.token( 'BNUM',  '0b[0-1]+', closure( flexer, token ) { Console.println("Binary Number: $token" ); });
+	c.token( 'ONUM',  '0[0-7]+', closure( flexer, token ) { Console.println("Octal Number: $token" ); });
+	c.token( 'HNUM',  '0x[0-9a-fA-F]+', closure( flexer, token ) { Console.println("Hexadecimal Number: $token" ); });
+	c.token( 'RNUM',  '(([0-9]*[\.][0-9]+)|([0-9]+[\.][0-9]+))', closure( flexer, token ) { Console.println("Real Number: $token" ); });
+	c.token( 'NNUM',  '(([0]{1})|([1-9]+[0-9]*))', closure( flexer, token ) { Console.println("Natural Number: $token" ); });	
+	c.token( 'LABEL', '[a-zA-Z_][a-zA-Z0-9_]*', closure( flexer, token ) { Console.println("Label: $token" ); });
+	c.token( 'PLUS',  '\+', closure( flexer, token ) { Console.println(" > $token <" ); });
+	c.token( 'MINUS', '\-', closure( flexer, token ) { Console.println(" > $token <" ); });
+	c.token( '[ \n\r\t]', null );
+	c.token( '/\*', closure( flexer, token ) { Console.println('Start Comment'); flexer.pushContext('COMMENT'); } );
+};
+
+f.context('COMMENT') using ( c ) {
+	c.token( '/\*',       closure( flexer, token ) { flexer.pushContext('COMMENT'); } );
+	c.token( '[*]/',      closure( flexer, token ) { Console.println('End Comment'); flexer.popContext(); } );
+	c.token( '[^*/]*',    null );
+	c.token( '[*][^*/]*', null );
+	c.token( '/[^*]',     null );
+};
+
+f.start( File.open((argv ? argv[0] : 'test.txt')).toString() );
+while( f.lex() > 0 );
