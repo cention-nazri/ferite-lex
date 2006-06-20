@@ -20,6 +20,7 @@ class Flexer {
 	}
 	string text = '';
 	function start( string text ) {
+		.contextStack = [];
 		.pushContext('FlexerDefault');
 		.text = text;
 		.contexts.each() using ( context ) {
@@ -29,9 +30,10 @@ class Flexer {
 	function streamLeft() {
 		return (.text.length() > 0 ? true : false);
 	}
+	number lastToken;
 	function lex() {
 		boolean tokenRecieved = false;
-		number  tokenID = 0;
+		.lastToken = 0;
 		while( not tokenRecieved ) {
 			array r = .contextStack.last().match( self, .text );
 			if( r[0] > 0 ) {
@@ -42,7 +44,7 @@ class Flexer {
 					.text = '';
 					
 				if( r[1] isa number ) {
-					tokenID = r[1];
+					.lastToken = r[1];
 					break;
 				} else {
 					continue;
@@ -50,12 +52,16 @@ class Flexer {
 			}
 			break;
 		}
-		return tokenID;
+		return .lastToken;
 	}
 	function pushContext( string name )
 		.contextStack.push( .context(name) );
 	function popContext() 
 		.contextStack.pop();
+		
+	object attachedObject;
+	function setAttachedObject( object o )
+		.attachedObject = o;
 }
 
 class FlexerContext {
@@ -84,8 +90,10 @@ class FlexerContext {
 	
 	object regexp;
 	function finalise() {
-		.token( 'UNKNOWN', '.', closure( flexer, token ) { return token.charToNum(); } );
-		.regexp = new Regexp(.lexicon(), 'gs');
+		if( not .regexp ) {
+			.token( 'UNKNOWN', '.', closure( flexer, token ) { return token.charToNum(); } );
+			.regexp = new Regexp(.lexicon(), 'gs');
+		}
 	}
 	function match( object flexer, string text ) {
 		object match = null;
@@ -96,7 +104,7 @@ class FlexerContext {
 		match = .regexp.match( text );
 		if( match ) {
 			captures = match.captures();
-			captures.keys().each() using ( key ) {
+			.order.each() using ( key ) {
 				if( captures[key] ) {
 					object action = .tokens[key]['Action'];
 					if( action )
