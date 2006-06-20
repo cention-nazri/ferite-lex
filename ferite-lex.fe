@@ -77,13 +77,24 @@ class FlexerContext {
 	array tokens;
 	array order;
 	
-	function token( string token, string match, object action ) {
+	function token( string token, string match, void action ) {
 		.tokens[token] = [ 'Token' => token, 'Match' => match, 'Action' => action ];
 		.order[] = token;
 	}
-	function token( string match, object action ) {
-		return .token( 'Token' + .order.size(), match, action );
+	function token( string token, string match ) {
+		object o = recipient();
+		if( o )
+			.token( token, match, o );
+		else
+			raise new Error( 'Expecting a closure!' );
 	}
+	function token( string match ) 
+		return .token( 'Token' + .order.size() ) using recipient();
+	function token( string match, object action )
+		return .token( 'Token' + .order.size(), match, action );
+	function token( string match, number token )
+		return .token( 'Token' + .order.size(), match, token );
+
 	function lexicon() {
 		return '^(' + .order.join('|') using ( key ) { return "(?P<$key>${.tokens[key]['Match']})"; } + ')';
 	}
@@ -106,9 +117,11 @@ class FlexerContext {
 			captures = match.captures();
 			.order.each() using ( key ) {
 				if( captures[key] ) {
-					object action = .tokens[key]['Action'];
-					if( action )
+					void action = .tokens[key]['Action'];
+					if( action isa object and action )
 						invokeReturn = action.invoke( flexer, captures[key] );
+					else if( action isa number ) 
+						invokeReturn = action;
 					tokenLength = captures[key].length();
 					return false;
 				}
