@@ -60,7 +60,7 @@ class Flexer {
 		.contextStack.pop();
 		
 	object attachedObject;
-	function setAttachedObject( object o )
+	function attach( object o )
 		.attachedObject = o;
 }
 
