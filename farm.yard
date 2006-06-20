@@ -1,10 +1,10 @@
 <?xml version="1.0" ?>
 <yard name="ferite-lex">
-    
-    <phase id="install">
-        <copy file="ferite-lex.fe" target="$(FeriteModuleSourceDir)" />
-        <copy file="ferite-lex.xml" target="$(FeriteModuleDescriptionDir)" />
-        <execute program="feritedoc" arguments="--regenerate" />
-    </phase>
-    
+
+	<phase id="install">
+		<copy file="ferite-lex.fe" target="$(FeriteModuleSourceDir)" />
+		<copy file="ferite-lex.xml" target="$(FeriteModuleDescriptionDir)" />
+		<execute program="feritedoc" arguments="--regenerate" />
+	</phase>
+
 </yard>
