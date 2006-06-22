@@ -31,21 +31,40 @@ class Flexer {
 		return (.text.length() > 0 ? true : false);
 	}
 	number lastToken;
+	array  tokenStack;
+	
 	function lex() {
 		boolean tokenRecieved = false;
 		.lastToken = 0;
+		while( .tokenStack ) {
+			.lastToken = .tokenStack[0]['Token'];
+			.attachedObject = null;
+			if( .tokenStack[0]['AttachedObject'] isa object )
+				.attachedObject = .tokenStack[0]['AttachedObject'];
+			.tokenStack.shift();
+			return .lastToken;
+		}
 		while( not tokenRecieved ) {
-			array r = .contextStack.last().match( self, .text );
-			if( r[0] > 0 ) {
-				
-				if( r[0] < .text.length() )
-					.text = .text[r[0]..];
-				else if( r[0] == .text.length() )
+			array r;
+			.attachedObject = null;
+			r = .contextStack.last().match( self, .text );
+			if( r['TokenLength'] > 0 ) {
+				if( r['TokenLength'] < .text.length() )
+					.text = .text[r['TokenLength']..];
+				else if( r['TokenLength'] == .text.length() )
 					.text = '';
 					
-				if( r[1] isa number ) {
-					.lastToken = r[1];
+				if( r['ActionReturn'] isa number ) {
+					.lastToken = r['ActionReturn'];
 					break;
+				} else if( r['ActionReturn'] isa array ) {
+					.tokenStack = r['ActionReturn'];
+					.lastToken = .tokenStack[0]['Token'];
+					.attachedObject = null;
+					if( .tokenStack[0]['AttachedObject'] isa object )
+						.attachedObject = .tokenStack[0]['AttachedObject'];
+					.tokenStack.shift();
+					return .lastToken;
 				} else {
 					continue;
 				}
@@ -56,6 +75,8 @@ class Flexer {
 	}
 	function pushContext( string name )
 		.contextStack.push( .context(name) );
+	function pushDefaultContext()
+		.contextStack.push( .context('FlexerDefault') );
 	function popContext() 
 		.contextStack.pop();
 		
@@ -88,15 +109,18 @@ class FlexerContext {
 		else
 			raise new Error( 'Expecting a closure!' );
 	}
-	function token( string match ) 
-		return .token( 'Token' + .order.size() ) using recipient();
+	function token( string match ) {
+		object o = recipient();
+		return .token( 'Token' + .order.size(), match, o );
+	}
 	function token( string match, object action )
 		return .token( 'Token' + .order.size(), match, action );
 	function token( string match, number token )
 		return .token( 'Token' + .order.size(), match, token );
 
 	function lexicon() {
-		return '^(' + .order.join('|') using ( key ) { return "(?P<$key>${.tokens[key]['Match']})"; } + ')';
+		string lexicon = '^(' + .order.join('|') using ( key ) { return "(?P<$key>${.tokens[key]['Match']})"; } + ')';
+		return lexicon;
 	}
 	
 	object regexp;
