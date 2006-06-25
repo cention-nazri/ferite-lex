@@ -99,6 +99,8 @@ class FlexerContext {
 	array order;
 	
 	function token( string token, string match, void action ) {
+		if( Regexp.match( '^[A-Za-z]+$', match ) )
+			match += '\b';
 		.tokens[token] = [ 'Token' => token, 'Match' => match, 'Action' => action ];
 		.order[] = token;
 	}
