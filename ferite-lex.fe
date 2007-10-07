@@ -107,9 +107,9 @@ class FlexerContext {
 	function token( string token, string match ) {
 		object o = recipient();
 		if( o )
-			.token( token, match, o );
+			return .token( token, match, o );
 		else
-			raise new Error( 'Expecting a closure!' );
+			return .token( 'Token' + .order.size(), token, match[0].charToNum() );
 	}
 	function token( string match ) {
 		object o = recipient();
