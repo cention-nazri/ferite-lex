@@ -2,14 +2,16 @@ uses "regexp";
 
 class Flexer {
 	
-	array contexts;
-	array contextStack;
+	array   contexts;
+	array   contextStack;
+	boolean debug;
 	
 	function context( string context ) {
 		object contextObject;
 		if( not .contexts.keyExists(context) )
 			.contexts[context] = new FlexerContext( context, .contexts.size() );
 		contextObject = .contexts[context];
+		contextObject.debug = .debug;
 		if( recipient() ) {
 			deliver( contextObject );
 		}
@@ -89,10 +91,12 @@ class FlexerContext {
 	
 	string name;
 	number id;
+	boolean debug;
 	
 	constructor( string name, number id ) {
 		.name = name;
 		.id = id;
+		.debug = false;
 	}
 	
 	array tokens;
@@ -120,9 +124,10 @@ class FlexerContext {
 	function token( string match, number token )
 		return .token( 'Token' + .order.size(), match, token );
 
+	string lexicon;
 	function lexicon() {
-		string lexicon = '^(' + .order.join('|') using ( key ) { return "(?P<$key>${.tokens[key]['Match']})"; } + ')';
-		return lexicon;
+		.lexicon = '^(' + .order.join('|') using ( key ) { return "(?P<$key>${.tokens[key]['Match']})"; } + ')';
+		return .lexicon;
 	}
 	
 	object regexp;
@@ -137,12 +142,19 @@ class FlexerContext {
 		array  captures = [];
 		number tokenLength = 0;
 		void   invokeReturn;
+		array  result;
 		
 		match = .regexp.match( text );
+		if( .debug ) {
+			Console.println('Flexer.Context.match: ' + "Text: '$text'");
+			Console.println('Flexer.Context.match: ' + "Lexicon: ${.lexicon}");
+			Console.println('Flexer.Context.match: ' + "Match: $match");
+		}
 		if( match ) {
 			captures = match.captures();
 			.order.each() using ( key ) {
-				if( captures[key] ) {
+				.debug and Console.println('Flexer.Context.match: ' + "Checking: '$key' -> '${captures[key]}'");
+				if( captures.keyExists(key) and captures[key] ) {
 					void action = .tokens[key]['Action'];
 					if( action isa object and action )
 						invokeReturn = action.invoke( flexer, captures[key] );
@@ -153,7 +165,9 @@ class FlexerContext {
 				}
 			};
 		}
-		return [ 'TokenLength' => tokenLength, 'ActionReturn' => invokeReturn ];
+		result = [ 'TokenLength' => tokenLength, 'ActionReturn' => invokeReturn ];
+		.debug and Console.println('Flexer.Context.match: ' + result);
+		return result;
 	}
 }
 
